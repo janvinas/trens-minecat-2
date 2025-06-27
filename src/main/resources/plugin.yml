@@ -1,0 +1,14 @@
+name: TrainManager
+version: '${project.version}'
+main: io.github.janvinas.trainmanager.TrainManager
+api-version: 1.19
+depend: [ Train_Carts ]
+authors: [ janitus1234 ]
+commands:
+  trainmanager:
+    description: Main command
+    usage: /tmg <command>
+    aliases: tmg
+    permission: traimanager.x
+    permission-message: You need the trainmanager.x permission to run this command.
+
