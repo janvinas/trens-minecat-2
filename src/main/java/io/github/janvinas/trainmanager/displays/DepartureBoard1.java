@@ -84,7 +84,7 @@ public class DepartureBoard1 extends MapDisplay {
                     departures.get(i).destination);
             getLayer(1).draw(MapFont.MINECRAFT, 170, 22 + i*10,
                     MapColorPalette.getColor(0, 0, 0),
-                    "");    //TODO platform not implemented yet
+                    departures.get(i).platform);
 
             if(departures.get(i).delay != null && departures.get(i).delay.toSeconds() > 10){
                 getLayer(1).draw(MapFont.MINECRAFT, 190, 22 + i*10,

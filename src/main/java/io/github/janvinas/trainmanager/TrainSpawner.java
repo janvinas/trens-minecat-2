@@ -57,7 +57,7 @@ public class TrainSpawner {
         loadTrains();
         scheduler.start();
         plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
-            while(pendingSpawns.size() > 0){
+            while(!pendingSpawns.isEmpty()){
                 QueuedSpawn s;
                 try {
                     s = pendingSpawns.take();
@@ -93,6 +93,9 @@ public class TrainSpawner {
     }
 
     public void loadTrains(){
+        this.plugin.trainTracker.clearServices();
+
+
         File serviceFileList = new File(plugin.getDataFolder(), "services");
         if(!serviceFileList.exists() || !serviceFileList.isDirectory()) return;
 
@@ -148,10 +151,11 @@ public class TrainSpawner {
             String name = stations.item(i).getTextContent();
             String departuretime = ((Element) stations.item(i)).getAttribute("departuretime");
             String newDestination = ((Element) stations.item(i)).getAttribute("newdest");
+            String platform = ((Element) stations.item(i)).getAttribute("platform");
             if(newDestination.equals("")) newDestination = null;
 
             Duration departuretimeDuration = Duration.ofSeconds(Integer.parseInt(departuretime));
-            props.stationList.put(departuretimeDuration, new TrackingProperties.Station(name, newDestination));
+            props.stationList.put(departuretimeDuration, new TrackingProperties.Station(name, newDestination, platform));
         }
 
         plugin.trainTracker.registerService(new Service(line, destination, time, props.stationList));

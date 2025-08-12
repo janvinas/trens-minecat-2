@@ -8,12 +8,14 @@ public class Departure {
     public String line;
     public String destination;
     public String name;
+    public String platform;
     public Duration delay;
 
-    public Departure(String line, String destination, LocalDateTime spawn, Duration delay){
+    public Departure(String line, String destination, String platform, LocalDateTime spawn, Duration delay){
         this.line = line;
         this.destination = destination;
         this.delay = delay;
+        this.platform = platform;
         this.name = line + "_" + DateTimeFormatter.ofPattern("HHmm").format(spawn);
     }
 }

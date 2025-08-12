@@ -49,6 +49,10 @@
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
+            <resource>
+                <directory>src/main/resources_unfiltered</directory>
+                <filtering>false</filtering>
+            </resource>
         </resources>
     </build>
 
@@ -71,19 +75,25 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.19.4-R0.1-SNAPSHOT</version>
+            <version>1.21.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.bergerkiller.bukkit</groupId>
             <artifactId>TrainCarts</artifactId>
-            <version>1.19.2-v2-SNAPSHOT</version>
+            <version>1.21.5-v2-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.bergerkiller.bukkit</groupId>
             <artifactId>BKCommonLib</artifactId>
-            <version>1.19.2-v3</version>
+            <version>1.21.5-v2-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.bergerkiller.bukkit</groupId>
+            <artifactId>SignLink</artifactId>
+            <version>1.21.5-v1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

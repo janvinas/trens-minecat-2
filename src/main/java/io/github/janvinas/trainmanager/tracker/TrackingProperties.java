@@ -8,10 +8,13 @@ import java.util.TreeMap;
 public class TrackingProperties {
     public static class Station implements Serializable {
         String name;
+        String platform;
         String newDestination;
 
-        public Station(String name, String destination){
-            this.name = name; this.newDestination = destination;
+        public Station(String name, String destination, String platform){
+            this.name = name;
+            this.newDestination = destination;
+            this.platform = platform;
         }
     }
     public String line;

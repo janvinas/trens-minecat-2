@@ -6,9 +6,11 @@ import com.bergerkiller.bukkit.tc.events.GroupRemoveEvent;
 import com.bergerkiller.bukkit.tc.properties.CartProperties;
 import com.bergerkiller.bukkit.tc.signactions.SignAction;
 import io.github.janvinas.trainmanager.displays.DepartureBoard1;
+import io.github.janvinas.trainmanager.displays.DepartureBoard2;
 import io.github.janvinas.trainmanager.signs.SignActionLeaveStation;
 import io.github.janvinas.trainmanager.tracker.TrackedTrain;
 import io.github.janvinas.trainmanager.tracker.TrainTracker;
+import io.github.janvinas.trainmanager.variableDisplays.VariableDisplayManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -33,6 +35,7 @@ public final class TrainManager extends JavaPlugin {
 
     public TrainTracker trainTracker = new TrainTracker(this);
     TrainSpawner trainSpawner = new TrainSpawner(this, trainTracker);
+    VariableDisplayManager variableDisplayManager;
 
     private void loadTrains(){
         File savedTrains = new File(getDataFolder(), "savedtrains.ser");
@@ -66,9 +69,15 @@ public final class TrainManager extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        // force loading of resources
+        Resources.getInstance();
+
         loadTrains();
         trainTracker.start();
         trainSpawner.start();
+
+        variableDisplayManager = new VariableDisplayManager(this);
+        variableDisplayManager.start();
 
         SignAction.register(new SignActionLeaveStation());
         getServer().getPluginManager().registerEvents(new EventListener(), this);
@@ -77,6 +86,7 @@ public final class TrainManager extends JavaPlugin {
     @Override
     public void onDisable() {
         saveTrains();
+        variableDisplayManager.stop();
     }
 
     @Override
@@ -86,16 +96,32 @@ public final class TrainManager extends JavaPlugin {
                 trainTracker.sendTrainInformation(CartProperties.getEditing((Player) sender), (Player) sender);
             }else if(args.length == 2 && args[0].equals("departures")){
                 trainTracker.sendStationInformation(args[1].replace('_', ' '), (Player) sender);
-            }else if(args.length == 3 && args[0].equals("getdisplay")){
+            }else if(args.length == 3 && args[0].equals("getdisplay")) {
                 ItemStack display = null;
-                if(args[1].equals("1")) {
+                if (args[1].equals("1")) {
                     display = MapDisplay.createMapItem(DepartureBoard1.class);
+                } else if (args[1].equals("2")) {
+                    display = MapDisplay.createMapItem(DepartureBoard2.class);
                 }
-                if(display == null) return true;
+                if (display == null) return true;
 
                 MapDisplayProperties.of(display).set("station", args[2].replace("_", " "));
                 MapDisplay.getAllDisplays(display).forEach(MapDisplay::restartDisplay);
                 ((Player) sender).getInventory().addItem(display);
+            } else if(args.length == 5 && args[0].equals("vdisplay")) {
+                String stationName = args[1].replace("_", " ");
+                String prefix = args[2];
+                String platform = args[3];
+                int period = Integer.parseInt(args[4]);
+                variableDisplayManager.addSign(platform, prefix, stationName, period);
+                sender.sendMessage("Variables created");
+            } else if (args.length == 1 && args[0].equals("vdisplays")) {
+                variableDisplayManager.getDisplays().forEach((d) -> {
+                    sender.sendMessage("Prefix=" + d.getVariablePrefix() +
+                                    " Station=" + d.getStationName() +
+                                    " Period=" + d.getPeriod() +
+                                    " Platform=" + d.getPlatform());
+                });
             }
         }
 

@@ -37,8 +37,12 @@ public class TrainTracker {
         }, 0, 600);
     }
 
-    public void registerService(Service s){
+    public void registerService(Service s) {
         this.services.add(s);
+    }
+
+    public void clearServices() {
+        this.services.clear();
     }
 
     public void trackTrain(String trainName, TrackingProperties props){
@@ -68,7 +72,7 @@ public class TrainTracker {
                     for(int i = 0; i <= min; i++){
                         LocalDateTime spawn = p.nextMatchingDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
                         LocalDateTime departure = spawn.plus(d);
-                        nextDepartures.put(departure, new Departure(service.line, destination[0], spawn, null));
+                        nextDepartures.put(departure, new Departure(service.line, destination[0], s.platform, spawn, null));
                     }
                 }
             });
@@ -89,7 +93,7 @@ public class TrainTracker {
                 trackedTrain.nextStations.forEach((LocalDateTime d, TrackingProperties.Station s) -> {
                     if(s.newDestination != null) destination.set(s.newDestination);
                     if(s.name.equals(station)){
-                        nextDepartures.put(d, new Departure(trackedTrain.line, destination.get(), trackedTrain.spawnTime, trackedTrain.delay));
+                        nextDepartures.put(d, new Departure(trackedTrain.line, destination.get(), s.platform, trackedTrain.spawnTime, trackedTrain.delay));
                     }
                 });
             }
@@ -97,6 +101,17 @@ public class TrainTracker {
         });
 
         return nextDepartures;
+    }
+
+    public TreeMap<LocalDateTime, Departure> getNextDepartures(String station, String platform, int min) {
+        var departures = getNextDepartures(station, min);
+        TreeMap<LocalDateTime, Departure> filteredDepartures = new TreeMap<>();
+        departures.forEach((LocalDateTime departureTime, Departure departure) -> {
+            if (departure.platform.equals(platform)) {
+                filteredDepartures.put(departureTime, departure);
+            }
+        });
+        return filteredDepartures;
     }
 
     public void sendStationInformation(String station, Player player){

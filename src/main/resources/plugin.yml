@@ -2,7 +2,7 @@ name: TrainManager
 version: '${project.version}'
 main: io.github.janvinas.trainmanager.TrainManager
 api-version: 1.19
-depend: [ Train_Carts ]
+depend: [ Train_Carts, BKCommonLib, SignLink ]
 authors: [ janitus1234 ]
 commands:
   trainmanager:
