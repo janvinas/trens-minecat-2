@@ -1,14 +1,14 @@
-name: TrainManager
+name: TrensMinecat2
 version: '${project.version}'
 main: io.github.janvinas.trainmanager.TrainManager
 api-version: 1.19
 depend: [ Train_Carts, BKCommonLib, SignLink ]
 authors: [ janitus1234 ]
 commands:
-  trainmanager:
+  trensminecat:
     description: Main command
-    usage: /tmg <command>
-    aliases: tmg
-    permission: traimanager.x
-    permission-message: You need the trainmanager.x permission to run this command.
+    usage: /tm <command>
+    aliases: tm
+    permission: trensminecat.x
+    permission-message: You need the trensminecat.x permission to run this command.
 

@@ -91,7 +91,7 @@ public final class TrainManager extends JavaPlugin {
 
     @Override
     public boolean onCommand(@NonNull CommandSender sender, @NonNull Command command, @NonNull String label, String[] args) {
-        if(command.getName().equals("trainmanager")) {
+        if(command.getName().equals("trensminecat")) {
             if (args.length == 1 && (args[0].equals("info") || args[0].equals("i"))) {
                 trainTracker.sendTrainInformation(CartProperties.getEditing((Player) sender), (Player) sender);
             }else if(args.length == 2 && args[0].equals("departures")){

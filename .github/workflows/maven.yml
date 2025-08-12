@@ -33,5 +33,5 @@ jobs:
     - name: Upload build artifact
       uses: actions/upload-artifact@v4
       with:
-        name: train-manager
+        name: trens-minecat-2
         path: target/*.jar
