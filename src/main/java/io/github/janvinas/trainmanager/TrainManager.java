@@ -122,6 +122,9 @@ public final class TrainManager extends JavaPlugin {
                                     " Period=" + d.getPeriod() +
                                     " Platform=" + d.getPlatform());
                 });
+            } else if (args.length == 1 && args[0].equals("reload")) {
+                trainTracker.removeAllTrains();
+                trainSpawner.reload();
             }
         }
 
