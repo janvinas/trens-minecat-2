@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.logging.Level;
@@ -46,6 +47,7 @@ public class TrainSpawner {
     TrainManager plugin;
     TrainTracker tracker;
     ArrayBlockingQueue<QueuedSpawn> pendingSpawns = new ArrayBlockingQueue<>(128);
+    ArrayList<String> tasks =  new ArrayList<>();
 
     public TrainSpawner(TrainManager plugin, TrainTracker tracker){
         this.plugin = plugin;
@@ -67,6 +69,13 @@ public class TrainSpawner {
 
             }
         }, 0, 1);
+    }
+
+    public void reload() {
+        tasks.forEach(task -> this.scheduler.deschedule(task));
+        tasks.clear();
+
+        this.loadTrains();
     }
 
     public void spawnTrain(String world, int x, int y, int z, String heading, String train, String trainName, @Nullable TrackingProperties trackingProperties){

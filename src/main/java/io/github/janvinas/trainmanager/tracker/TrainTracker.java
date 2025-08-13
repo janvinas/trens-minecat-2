@@ -50,8 +50,13 @@ public class TrainTracker {
         trackedTrains.put(trainName, trackedTrain);
     }
 
-    public void removeTrain(String trainName){
+    public void removeTrain(String trainName) {
         trackedTrains.remove(trainName);
+    }
+
+
+    public void removeAllTrains() {
+        trackedTrains.clear();
     }
 
     public boolean leaveStation(String trainName, String station){
